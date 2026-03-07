@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, RotateCcw, Medal, LogOut, ShieldCheck, UserCircle, History } from 'lucide-react';
 import { supabase } from './supabaseClient';
@@ -219,7 +219,7 @@ function App() {
                 const cp = slots[slot];
                 const isEx = cp && slot !== "Joker" && cp.Pos.split('-').includes(slot);
                 return (
-                  <div key={slot} ref={el => slotRefs.current[slot] = el} className={`slot ${selectedIndex !== null && !cp ? 'active' : ''}`}
+                  <div key={slot} ref={el => { slotRefs.current[slot] = el; }} className={`slot ${selectedIndex !== null && !cp ? 'active' : ''}`}
                        onClick={() => cp ? removeCard(slot) : (selectedIndex !== null && placeCard(slot))}>
                     <div className="slot-label">{slot}</div>
                     {cp && (
