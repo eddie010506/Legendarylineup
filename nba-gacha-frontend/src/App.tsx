@@ -292,13 +292,20 @@ function App() {
                   {hand.map((p, idx) => (
                     <motion.div key={`${p.Player}-${p.Season}`} layout initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.5 }}
                                 drag={revealedIndices.has(idx)} dragSnapToOrigin whileDrag={{ scale: 1.1, zIndex: 1000 }}
-                                onDragEnd={(_e, i) => {
-                                  const { x, y } = i.point;
+                                onDragEnd={(e, _i) => {
+                                  // Use clientX and clientY for more reliable screen coordinates
+                                  const point = (e as any).clientX !== undefined ? { x: (e as any).clientX, y: (e as any).clientY } : (e as any).changedTouches?.[0];
+                                  if (!point) return;
+
+                                  const { x, y } = point;
                                   for (const s of SLOTS) {
                                     const el = slotRefs.current[s];
                                     if (el) {
                                       const r = el.getBoundingClientRect();
-                                      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return placeCard(s, idx);
+                                      // Add a small buffer (5px) to make it feel better
+                                      if (x >= r.left - 5 && x <= r.right + 5 && y >= r.top - 5 && y <= r.bottom + 5) {
+                                        return placeCard(s, idx);
+                                      }
                                     }
                                   }
                                 }}
