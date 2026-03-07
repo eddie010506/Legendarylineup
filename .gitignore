@@ -1,0 +1,24 @@
+# Node
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+
+# Data
+players.json
+*.csv
+
+# Env
+.env
+.env.local
+nba-gacha-frontend/.env
+nba-gacha-frontend/.env.local
+
+# OS/Editor
+.DS_Store
+.vscode/
+.idea/
