@@ -432,6 +432,26 @@
     width: 100%;
   }
 
+  .mobile-instructions {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(129, 140, 248, 0.1);
+    border: 1px solid rgba(129, 140, 248, 0.2);
+    border-radius: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #e2e8f0;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .rules-container {
+    display: none !important;
+  }
+
+
   /* 3x2 Slots Grid (3 across, 2 down) */
   .slots-grid {
     display: grid;
@@ -445,6 +465,7 @@
     width: 100%;
     box-sizing: border-box;
   }
+
 
   .slot {
     aspect-ratio: 2.5 / 3.5;

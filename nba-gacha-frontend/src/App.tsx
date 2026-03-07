@@ -245,6 +245,12 @@ function App() {
           </motion.div>
         ) : (
           <motion.div key="game" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="game-wrapper" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div className="mobile-instructions">
+              <div>• Exact positions give you 5 bonus points.</div>
+              <div>• Cards can be placed in exact or adjacent positions.</div>
+              {!user && <div>• Sign in to draw 10 cards instead of 7.</div>}
+            </div>
+
             <div className="slots-grid">
               {SLOTS.map(slot => {
                 const cp = slots[slot];
