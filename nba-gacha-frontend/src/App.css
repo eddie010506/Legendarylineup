@@ -17,6 +17,10 @@
   overflow-x: hidden;
 }
 
+.mobile-instructions {
+  display: none;
+}
+
 .top-nav {
   display: flex;
   justify-content: space-between;
