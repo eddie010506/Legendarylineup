@@ -389,11 +389,36 @@
 .card-stats { font-size: 0.65rem; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 0.5rem; text-align: center; }
 .card-score-footer { font-size: 0.6rem; opacity: 0.5; text-align: center; }
 
+.card-content-layer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.mobile-stats-hint {
+  font-size: 0.5rem;
+  opacity: 0.6;
+  text-align: center;
+  color: #818cf8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* Fix Card Drag Z-Index */
+.card-wrapper:active {
+  z-index: 5000 !important;
+}
+
 /* Mobile Responsiveness (Screens smaller than 768px) */
 @media (max-width: 768px) {
   .game-container {
     padding: 1rem;
     gap: 0.5rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .top-nav h1 {
@@ -422,12 +447,21 @@
     height: 150px;
   }
 
-  .card-name { font-size: 0.7rem; }
-  .card-pos { font-size: 0.65rem; }
-  .card-season-center { font-size: 1rem; }
-  .card-advanced-stats { font-size: 0.55rem; gap: 4px; }
+  .card-name { 
+    font-size: 0.65rem !important;
+    line-height: 1.1;
+    max-height: 2.2em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-pos { font-size: 0.6rem !important; margin-top: 2px; }
+  .card-season-center { font-size: 0.9rem !important; }
+  .card-advanced-stats { font-size: 0.5rem; gap: 4px; }
   .card-stats { font-size: 0.55rem; padding: 4px; }
-  
+
   /* Rules and Perks stack vertically */
   .rules-container {
     flex-direction: column;
@@ -469,6 +503,7 @@
 
   .initials { font-size: 1rem; }
 }
+
 
 /* Extra small screens (Phones) */
 @media (max-width: 480px) {
