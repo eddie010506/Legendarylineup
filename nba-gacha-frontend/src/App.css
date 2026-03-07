@@ -452,6 +452,18 @@
     margin: 0;
     width: 100%;
     border-width: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Keep it clean */
+  }
+
+  /* Prevent thin cards in slots */
+  .slot .card-wrapper {
+    width: 90% !important;
+    height: 90% !important;
+    min-width: 80px !important;
+    transform: scale(1) !important;
   }
 
   .slot-label {

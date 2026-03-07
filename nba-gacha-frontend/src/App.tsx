@@ -292,6 +292,18 @@ function App() {
                   {hand.map((p, idx) => (
                     <motion.div key={`${p.Player}-${p.Season}`} layout initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.5 }}
                                 drag={revealedIndices.has(idx)} dragSnapToOrigin whileDrag={{ scale: 1.1, zIndex: 1000 }}
+                                onDrag={(e) => {
+                                  // Auto-scroll logic
+                                  const y = (e as any).clientY || (e as any).touches?.[0]?.clientY;
+                                  if (!y) return;
+                                  
+                                  const threshold = 100; // px from edge
+                                  if (y < threshold) {
+                                    window.scrollBy({ top: -15, behavior: 'auto' });
+                                  } else if (y > window.innerHeight - threshold) {
+                                    window.scrollBy({ top: 15, behavior: 'auto' });
+                                  }
+                                }}
                                 onDragEnd={(e, _i) => {
                                   // Use clientX and clientY for more reliable screen coordinates
                                   const point = (e as any).clientX !== undefined ? { x: (e as any).clientX, y: (e as any).clientY } : (e as any).changedTouches?.[0];
