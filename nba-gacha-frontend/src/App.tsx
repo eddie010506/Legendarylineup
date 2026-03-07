@@ -287,8 +287,12 @@ function App() {
                           <div style={{ margin: '1rem 0' }}>Submitting record for <strong>{profile?.nickname}</strong>...</div>
                         ) : (
                           <div className="submit-box">
+                            <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: '0 0 -0.5rem 0' }}>Enter your 3-letter initials</p>
                             <input type="text" maxLength={3} value={initials} onChange={(e) => setInitials(e.target.value.toUpperCase())} placeholder="INI" />
                             <button className="draw-btn" onClick={() => submitScore(initials)} disabled={initials.length !== 3}>Submit Score</button>
+                            <p style={{ fontSize: '0.75rem', color: '#818cf8', marginTop: '0.5rem', lineHeight: '1.4', opacity: 0.9 }}>
+                              💡 <strong>Tip:</strong> <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => setAuthMode('signup')}>Sign up</span> to choose a nickname and auto-register your scores!
+                            </p>
                           </div>
                         )
                       ) : (
