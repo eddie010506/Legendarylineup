@@ -467,9 +467,27 @@
   }
 
   .slot-label {
-    font-size: 0.8rem;
-    opacity: 0.3;
+    font-size: 1rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.5); /* Make labels visible */
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
   }
+
+  /* Prevent flat/thin cards in slots */
+  .slot .card-wrapper {
+    width: 90px !important; /* Fixed width for slot cards */
+    height: 130px !important; /* Fixed height for slot cards */
+    transform: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .slot .card-inner, .slot .card-face {
+    border-radius: 0.5rem !important;
+  }
+
 
   /* Multi-Row Hand Grid (No horizontal scroll) */
   .hand-container {
