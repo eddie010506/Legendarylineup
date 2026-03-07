@@ -580,10 +580,6 @@
 }
 /* Extra small screens (Phones) */
 @media (max-width: 480px) {
-  .slots-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns on very small phones */
-  }
-  
   .card-wrapper {
     width: 90px;
     height: 135px;
