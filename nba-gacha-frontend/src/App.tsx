@@ -337,33 +337,34 @@ function App() {
               </div>
             </div>
 
-            {gameStatus === 'finished' && (
-              <div className="finish-overlay">
-                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="finish-modal">
-                  <Trophy size={48} color="#f59e0b" style={{ margin: '0 auto' }} />
-                  <h2>Final Score: {calculateTotal()}</h2>
-                  {!scoreSubmitted ? (
-                    user ? (
-                      <div style={{ margin: '1rem 0' }}>Submitting record for <strong>{profile?.nickname}</strong>...</div>
-                    ) : (
-                      <div className="submit-box">
-                        <input type="text" maxLength={3} value={initials} onChange={(e) => setInitials(e.target.value.toUpperCase())} placeholder="INI" />
-                        <button className="draw-btn" onClick={() => submitScore(initials)} disabled={initials.length !== 3}>Submit Score</button>
-                      </div>
-                    )
-                  ) : (
-                    <div className="rank-reveal">
-                      <div className="rank-stat">Rank: <strong>#{currentRank}</strong> of {totalScoresCount}</div>
-                      <div className="rank-stat">Percentile: <strong>{((currentRank! / totalScoresCount) * 100).toFixed(1)}%</strong></div>
-                    </div>
-                  )}
-                  <button className="draw-btn secondary" onClick={dealHand}><RotateCcw size={16} /> New Game</button>
-                </motion.div>
-              </div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>
+
+      {view === 'game' && gameStatus === 'finished' && (
+        <div className="finish-overlay">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="finish-modal">
+            <Trophy size={48} color="#f59e0b" style={{ margin: '0 auto' }} />
+            <h2>Final Score: {calculateTotal()}</h2>
+            {!scoreSubmitted ? (
+              user ? (
+                <div style={{ margin: '1rem 0' }}>Submitting record for <strong>{profile?.nickname}</strong>...</div>
+              ) : (
+                <div className="submit-box">
+                  <input type="text" maxLength={3} value={initials} onChange={(e) => setInitials(e.target.value.toUpperCase())} placeholder="INI" />
+                  <button className="draw-btn" onClick={() => submitScore(initials)} disabled={initials.length !== 3}>Submit Score</button>
+                </div>
+              )
+            ) : (
+              <div className="rank-reveal">
+                <div className="rank-stat">Rank: <strong>#{currentRank}</strong> of {totalScoresCount}</div>
+                <div className="rank-stat">Percentile: <strong>{((currentRank! / totalScoresCount) * 100).toFixed(1)}%</strong></div>
+              </div>
+            )}
+            <button className="draw-btn secondary" onClick={dealHand}><RotateCcw size={16} /> New Game</button>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
