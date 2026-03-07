@@ -16,6 +16,7 @@ function App() {
   const [authEmail, setAuthEmail] = useState('');
   const [authPass, setAuthPass] = useState('');
   const [authMode, setAuthMode] = useState<'login' | 'signup' | null>(null);
+  const [authMessage, setAuthMessage] = useState<string | null>(null);
   const [tempNickname, setNickname] = useState('');
   const [showNicknamePrompt, setShowNicknamePrompt] = useState(false);
 
@@ -41,6 +42,7 @@ function App() {
       setUser(session?.user ?? null);
       if (session?.user) {
         setAuthMode(null);
+        setAuthMessage(null);
         fetchProfile(session.user.id);
       } else {
         setProfile(null);
@@ -80,10 +82,26 @@ function App() {
   };
 
   const handleAuth = async () => {
-    const { error } = authMode === 'login' 
+    setAuthMessage(null);
+    if (authMode === 'signup' && tempNickname.length < 2) {
+      return alert("Nickname is too short!");
+    }
+
+    const { data, error } = authMode === 'login' 
       ? await supabase.auth.signInWithPassword({ email: authEmail, password: authPass })
-      : await supabase.auth.signUp({ email: authEmail, password: authPass });
-    if (error) alert(error.message);
+      : await supabase.auth.signUp({ 
+          email: authEmail, 
+          password: authPass,
+          options: {
+            data: { nickname: tempNickname }
+          }
+        });
+
+    if (error) {
+      alert(error.message);
+    } else if (authMode === 'signup' && data.user && !data.session) {
+      setAuthMessage("Success! Please check your email to confirm your account.");
+    }
   };
 
   const getHighScore = () => {
@@ -131,18 +149,31 @@ function App() {
             <div className="auth-card">
               <h2>{authMode === 'login' ? "Welcome Back" : "Join the Legends"}</h2>
               <p>{authMode === 'login' ? "Login to save your high scores" : "Sign up to draw 10 cards instead of 7!"}</p>
-              <input type="email" placeholder="Email Address" value={authEmail} onChange={e => setAuthEmail(e.target.value)} />
-              <input type="password" placeholder="Password" value={authPass} onChange={e => setAuthPass(e.target.value)} />
-              <div className="auth-btns">
-                <button onClick={handleAuth}>{authMode === 'login' ? "Login" : "Create Account"}</button>
-              </div>
+              
+              {authMessage ? (
+                <div className="auth-success-message" style={{ color: '#22c55e', textAlign: 'center', padding: '1rem', background: 'rgba(34,197,94,0.1)', borderRadius: '0.5rem' }}>
+                  {authMessage}
+                </div>
+              ) : (
+                <>
+                  {authMode === 'signup' && (
+                    <input type="text" placeholder="Legendary Nickname" value={tempNickname} onChange={e => setNickname(e.target.value)} />
+                  )}
+                  <input type="email" placeholder="Email Address" value={authEmail} onChange={e => setAuthEmail(e.target.value)} />
+                  <input type="password" placeholder="Password" value={authPass} onChange={e => setAuthPass(e.target.value)} />
+                  <div className="auth-btns">
+                    <button onClick={handleAuth}>{authMode === 'login' ? "Login" : "Create Account"}</button>
+                  </div>
+                </>
+              )}
+
               <div className="auth-toggle-text">
                 {authMode === 'login' ? "Don't have an account?" : "Already a member?"}
-                <button onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}>
+                <button onClick={() => { setAuthMode(authMode === 'login' ? 'signup' : 'login'); setAuthMessage(null); }}>
                   {authMode === 'login' ? "Sign Up" : "Login"}
                 </button>
               </div>
-              <button className="close-btn" onClick={() => setAuthMode(null)}>Cancel</button>
+              <button className="close-btn" onClick={() => { setAuthMode(null); setAuthMessage(null); }}>Cancel</button>
             </div>
           </motion.div>
         )}
