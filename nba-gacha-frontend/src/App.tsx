@@ -251,23 +251,57 @@ function App() {
               {!user && <div>• Sign in to draw 10 cards instead of 7.</div>}
             </div>
 
-            <div className="slots-grid">
-              {SLOTS.map(slot => {
-                const cp = slots[slot];
-                const isEx = cp && slot !== "Joker" && cp.Pos.split('-').includes(slot);
-                return (
-                  <div key={slot} ref={el => { slotRefs.current[slot] = el; }} className={`slot ${selectedIndex !== null && !cp ? 'active' : ''}`}
-                       onClick={() => cp ? removeCard(slot) : (selectedIndex !== null && placeCard(slot))}>
-                    <div className="slot-label">{slot}</div>
-                    {cp && (
-                      <div style={{ position: 'relative', pointerEvents: 'none' }}>
-                        {isEx && <div className="bonus-indicator" style={{ pointerEvents: 'auto' }}>+5 Bonus</div>}
-                        <Card player={cp} isRevealed={true} onReveal={() => {}} isSmall={true} />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            <div className="slots-grid-wrapper">
+              <div className="slots-grid">
+                {SLOTS.map(slot => {
+                  const cp = slots[slot];
+                  const isEx = cp && slot !== "Joker" && cp.Pos.split('-').includes(slot);
+                  return (
+                    <div key={slot} ref={el => { slotRefs.current[slot] = el; }} className={`slot ${selectedIndex !== null && !cp ? 'active' : ''}`}
+                         onClick={() => cp ? removeCard(slot) : (selectedIndex !== null && placeCard(slot))}>
+                      <div className="slot-label">{slot}</div>
+                      {cp && (
+                        <div style={{ position: 'relative', pointerEvents: 'none' }}>
+                          {isEx && <div className="bonus-indicator" style={{ pointerEvents: 'auto' }}>+5 Bonus</div>}
+                          <Card player={cp} isRevealed={true} onReveal={() => {}} isSmall={true} />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <AnimatePresence>
+                {gameStatus === 'finished' && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }} 
+                    animate={{ opacity: 1, scale: 1 }} 
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="finish-overlay-anchored"
+                  >
+                    <div className="finish-modal">
+                      <Trophy size={48} color="#f59e0b" style={{ margin: '0 auto' }} />
+                      <h2>Final Score: {calculateTotal()}</h2>
+                      {!scoreSubmitted ? (
+                        user ? (
+                          <div style={{ margin: '1rem 0' }}>Submitting record for <strong>{profile?.nickname}</strong>...</div>
+                        ) : (
+                          <div className="submit-box">
+                            <input type="text" maxLength={3} value={initials} onChange={(e) => setInitials(e.target.value.toUpperCase())} placeholder="INI" />
+                            <button className="draw-btn" onClick={() => submitScore(initials)} disabled={initials.length !== 3}>Submit Score</button>
+                          </div>
+                        )
+                      ) : (
+                        <div className="rank-reveal">
+                          <div className="rank-stat">Rank: <strong>#{currentRank}</strong> of {totalScoresCount}</div>
+                          <div className="rank-stat">Percentile: <strong>{((currentRank! / totalScoresCount) * 100).toFixed(1)}%</strong></div>
+                        </div>
+                      )}
+                      <button className="draw-btn secondary" onClick={dealHand}><RotateCcw size={16} /> New Game</button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="rules-container">
@@ -340,31 +374,6 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {view === 'game' && gameStatus === 'finished' && (
-        <div className="finish-overlay">
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="finish-modal">
-            <Trophy size={48} color="#f59e0b" style={{ margin: '0 auto' }} />
-            <h2>Final Score: {calculateTotal()}</h2>
-            {!scoreSubmitted ? (
-              user ? (
-                <div style={{ margin: '1rem 0' }}>Submitting record for <strong>{profile?.nickname}</strong>...</div>
-              ) : (
-                <div className="submit-box">
-                  <input type="text" maxLength={3} value={initials} onChange={(e) => setInitials(e.target.value.toUpperCase())} placeholder="INI" />
-                  <button className="draw-btn" onClick={() => submitScore(initials)} disabled={initials.length !== 3}>Submit Score</button>
-                </div>
-              )
-            ) : (
-              <div className="rank-reveal">
-                <div className="rank-stat">Rank: <strong>#{currentRank}</strong> of {totalScoresCount}</div>
-                <div className="rank-stat">Percentile: <strong>{((currentRank! / totalScoresCount) * 100).toFixed(1)}%</strong></div>
-              </div>
-            )}
-            <button className="draw-btn secondary" onClick={dealHand}><RotateCcw size={16} /> New Game</button>
-          </motion.div>
-        </div>
-      )}
     </div>
   );
 }
