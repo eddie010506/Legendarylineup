@@ -415,62 +415,73 @@
 /* Mobile Responsiveness (Screens smaller than 768px) */
 @media (max-width: 768px) {
   .game-container {
-    padding: 1rem;
+    padding: 0.5rem;
     gap: 0.5rem;
     overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
     -webkit-overflow-scrolling: touch;
   }
 
-  .top-nav h1 {
-    font-size: 1.2rem;
-    letter-spacing: 0.1rem;
+  .top-nav {
+    margin-bottom: 0.25rem;
   }
 
-  /* Stack Slots into 3 columns */
+  .top-nav h1 {
+    font-size: 1.1rem;
+    letter-spacing: 0.05rem;
+  }
+
+  /* Shrink Slots */
   .slots-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    padding: 0.75rem;
+    gap: 0.3rem;
+    padding: 0.4rem;
+    background: rgba(255,255,255,0.03);
   }
 
   .slot {
     aspect-ratio: 2.5 / 3.5;
+    transform: scale(0.8); /* Shrink slots by 20% */
+    margin: -10px 0; /* Tighten vertical space */
   }
 
   .slot-label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
-  /* Make Cards Smaller on Mobile */
+  /* Make Cards Bigger on Mobile */
   .card-wrapper {
-    width: 100px;
-    height: 150px;
+    width: 120px;
+    height: 175px;
   }
 
   .card-name { 
-    font-size: 0.65rem !important;
+    font-size: 0.75rem !important;
     line-height: 1.1;
-    max-height: 2.2em;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
-  .card-pos { font-size: 0.6rem !important; margin-top: 2px; }
-  .card-season-center { font-size: 0.9rem !important; }
-  .card-advanced-stats { font-size: 0.5rem; gap: 4px; }
-  .card-stats { font-size: 0.55rem; padding: 4px; }
+  .card-pos { font-size: 0.65rem !important; }
+  .card-season-center { font-size: 1rem !important; }
+  .card-score-footer { font-size: 0.6rem !important; }
 
-  /* Rules and Perks stack vertically */
-  .rules-container {
-    flex-direction: column;
-    padding: 0;
+  /* Fix Card Drag Z-Index and UI Clipping */
+  .game-wrapper {
+    position: relative;
+    z-index: 1;
   }
 
-  .rules-banner, .perks-banner {
-    width: 100%;
-    padding: 1rem;
+  .hand-container {
+    z-index: 100; /* Ensure hand is above background but below active drag */
+  }
+
+  /* This class is applied by Framer Motion during drag */
+  [data-framer-component-type="motion.div"] {
+    z-index: 1;
+  }
+
+  div[style*="touch-action: none"] {
+    z-index: 9999 !important; /* Force the specific dragged element to the top */
   }
 
   /* Horizontal scrolling for the Hand */
@@ -480,9 +491,11 @@
     overflow-x: auto;
     justify-content: flex-start;
     width: 100vw;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     -webkit-overflow-scrolling: touch;
-    gap: 0.75rem;
+    gap: 1rem;
+    border: none;
+    background: transparent;
   }
 
   .hand-container.layout-7, .hand-container.layout-10 {
@@ -493,17 +506,17 @@
   .finish-modal {
     width: 95%;
     padding: 1.5rem;
+    z-index: 10000;
   }
 
   .leaderboard-row {
     grid-template-columns: 40px 1fr 60px 80px;
     padding: 0.75rem;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
-  .initials { font-size: 1rem; }
+  .initials { font-size: 0.9rem; }
 }
-
 
 /* Extra small screens (Phones) */
 @media (max-width: 480px) {
