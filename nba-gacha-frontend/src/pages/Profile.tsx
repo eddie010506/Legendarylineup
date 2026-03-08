@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { UserCircle, Trophy, Swords, LogOut, History, ArrowLeft, ShieldCheck } from 'lucide-react';
+import { UserCircle, Trophy, Swords, LogOut, ArrowLeft, ShieldCheck } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import './Profile.css';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [lineupStats, setLineupStats] = useState({ high: 0, games: 0 });
   const [battleStats, setBattleStats] = useState({ wins: 0, games: 0, rank: 0 });
@@ -20,7 +19,6 @@ const Profile: React.FC = () => {
         navigate('/');
         return;
       }
-      setUser(session.user);
 
       // 1. Fetch Profile
       const { data: prof } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();

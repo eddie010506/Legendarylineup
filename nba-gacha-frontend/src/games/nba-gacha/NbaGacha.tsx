@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, RotateCcw, Medal, LogOut, ShieldCheck, UserCircle, History, Swords, Home as HomeIcon } from 'lucide-react';
+import { Trophy, RotateCcw, Medal, ShieldCheck, UserCircle, Swords, Home as HomeIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import { useGameEngine } from '../../hooks/useGameEngine';
@@ -13,7 +13,6 @@ function NbaGacha() {
   // 1. Auth & Profile State
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
-  const [userHistory, setUserHistory] = useState<LeaderboardEntry[]>([]);
   const [authEmail, setAuthEmail] = useState('');
   const [authPass, setAuthPass] = useState('');
   const [authMode, setAuthMode] = useState<'login' | 'signup' | null>(null);
@@ -22,7 +21,7 @@ function NbaGacha() {
   const [showNicknamePrompt, setShowNicknamePrompt] = useState(false);
 
   // 2. UI View State
-  const [view, setView] = useState<'game' | 'leaderboard' | 'profile'>('game');
+  const [view, setView] = useState<'game' | 'leaderboard'>('game');
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [initials, setInitials] = useState('');
 
@@ -32,7 +31,7 @@ function NbaGacha() {
     currentRank, layoutSize, slotRefs, totalScoresCount,
     setSelectedIndex, setRevealedIndices, setTotalScoresCount,
     dealHand, placeCard, removeCard, calculateTotal, submitScore
-  } = useGameEngine(user, profile, () => fetchLeaderboard(), (uid) => fetchUserHistory(uid));
+  } = useGameEngine(user, profile, () => fetchLeaderboard());
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -57,15 +56,9 @@ function NbaGacha() {
     const { data } = await supabase.from('profiles').select('*').eq('id', uid).single();
     if (data) {
       setProfile(data);
-      fetchUserHistory(uid);
     } else {
       setShowNicknamePrompt(true);
     }
-  };
-
-  const fetchUserHistory = async (uid: string) => {
-    const { data } = await supabase.from('scores').select('*').eq('user_id', uid).order('created_at', { ascending: false });
-    if (data) setUserHistory(data);
   };
 
   const fetchLeaderboard = async () => {
@@ -103,11 +96,6 @@ function NbaGacha() {
     } else if (authMode === 'signup' && data.user && !data.session) {
       setAuthMessage("Success! Please check your email to confirm your account.");
     }
-  };
-
-  const getHighScore = () => {
-    if (userHistory.length === 0) return 0;
-    return Math.max(...userHistory.map(h => h.score));
   };
 
   return (
@@ -213,38 +201,6 @@ function NbaGacha() {
                     )}
                   </div>
                   <span className="date">{new Date(e.created_at).toLocaleDateString()}</span>
-                </div>
-              ))}
-            </div>
-            <button className="draw-btn secondary" style={{ maxWidth: '200px', margin: '2rem auto' }} onClick={() => setView('game')}>Back to Game</button>
-          </motion.div>
-        ) : view === 'profile' ? (
-          <motion.div key="profile" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="profile-view">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
-              <div>
-                <h2 style={{ margin: 0 }}>{profile?.nickname}'s Profile</h2>
-                <p style={{ opacity: 0.5, margin: '4px 0' }}>Member since {new Date(profile?.created_at).toLocaleDateString()}</p>
-              </div>
-              <button className="nav-btn" onClick={() => supabase.auth.signOut()}><LogOut size={16} /> Logout</button>
-            </div>
-
-            <div className="profile-stats">
-              <div className="stat-card">
-                <h4>High Score</h4>
-                <div>{getHighScore()}</div>
-              </div>
-              <div className="stat-card">
-                <h4>Games Played</h4>
-                <div>{userHistory.length}</div>
-              </div>
-            </div>
-
-            <h3><History size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }} /> Recent Lineups</h3>
-            <div className="history-list">
-              {userHistory.map((h, i) => (
-                <div key={i} className="history-item">
-                  <div className="history-score">{h.score} pts</div>
-                  <div className="history-date">{new Date(h.created_at).toLocaleDateString()}</div>
                 </div>
               ))}
             </div>

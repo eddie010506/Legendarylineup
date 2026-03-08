@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient';
 import { SLOT_RULES } from '../gameTypes';
 import type { Player, SlotMap, SlotName } from '../gameTypes';
 
-export const useGameEngine = (user: any, profile: any, fetchLeaderboard: () => void, fetchUserHistory: (uid: string) => void) => {
+export const useGameEngine = (user: any, profile: any, fetchLeaderboard: () => void) => {
   const [hand, setHand] = useState<Player[]>([]);
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(new Set());
   const [slots, setSlots] = useState<SlotMap>({ PG: null, SG: null, SF: null, PF: null, C: null, Joker: null });
@@ -68,7 +68,6 @@ export const useGameEngine = (user: any, profile: any, fetchLeaderboard: () => v
     setCurrentRank(new_rank);
     setScoreSubmitted(true);
     fetchLeaderboard();
-    if (user) fetchUserHistory(user.id);
   };
 
   const placeCard = (slotName: SlotName, idx?: number) => {
