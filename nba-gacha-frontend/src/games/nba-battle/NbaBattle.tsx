@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Swords, Trophy, Shield, RotateCcw, Home as HomeIcon, Zap, Medal, UserCircle } from 'lucide-react';
+import { Swords, Trophy, Shield, RotateCcw, Home as HomeIcon, Medal, UserCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import { useBattleEngine } from '../../hooks/useBattleEngine';
