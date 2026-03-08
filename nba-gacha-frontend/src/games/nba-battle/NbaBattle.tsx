@@ -104,14 +104,21 @@ const NbaBattle: React.FC = () => {
   return (
     <div className="battle-container">
       <div className="battle-header">
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <Link to="/" className="nav-btn" title="Back to Hub"><HomeIcon size={18} /></Link>
+        <h1 onClick={() => view !== 'game' && setView('game')} style={{ cursor: 'pointer', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '0.3rem', background: 'linear-gradient(to right, #fff, #ef4444)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>NBA BATTLE</h1>
+        
+        <div className="nav-actions">
+          <Link to="/" className="nav-btn" title="Back to Hub">
+            <HomeIcon size={18} /> Hub
+          </Link>
+          <Link to="/lineup" className="nav-btn lineup-nav-btn">
+            Legendary Lineup
+          </Link>
           <button className="nav-btn" onClick={toggleLeaderboard}>
             {view === 'game' ? <><Medal size={18} /> Rankings</> : "Back to Game"}
           </button>
           {user ? (
-            <Link to="/profile" className="nav-btn" style={{ background: 'rgba(79, 70, 229, 0.2)' }}>
-              <UserCircle size={18} /> {profile?.nickname || 'Profile'}
+            <Link to="/profile" className="user-info-chip" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <UserCircle size={20} /> {profile?.nickname || 'Set Nickname'}
             </Link>
           ) : (
             <>
@@ -120,7 +127,9 @@ const NbaBattle: React.FC = () => {
             </>
           )}
         </div>
-        
+      </div>
+
+      <div className="compact-scoreboard-wrapper">
         <div className="compact-scoreboard">
           <div className="scoreboard-side">
             <span className="side-name">PLAYER</span>
@@ -136,8 +145,6 @@ const NbaBattle: React.FC = () => {
             <span className="side-name">CPU</span>
           </div>
         </div>
-
-        <Link to="/lineup" className="nav-btn lineup-nav-btn">Legendary Lineup</Link>
       </div>
 
       <AnimatePresence>

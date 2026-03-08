@@ -18,7 +18,21 @@
   z-index: 10;
 }
 
-/* Compact Scoreboard */
+.nav-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Compact Scoreboard centering */
+.compact-scoreboard-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
 .compact-scoreboard {
   display: flex;
   align-items: center;
