@@ -45,6 +45,14 @@ const Card: React.FC<CardProps> = ({ player, isRevealed, onReveal, isSelected, o
             {(!showStats || window.innerWidth > 768) ? (
               <motion.div key="main-info" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="card-content-layer" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '100%' }}>
                 <div className="card-name">{player.Player}</div>
+                
+                {/* Mobile Grade Badge */}
+                {window.innerWidth <= 768 && (
+                  <div className="mobile-grade-badge" style={{ fontSize: '0.6rem', fontWeight: 900, background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', alignSelf: 'center', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>
+                    {player.Grade.toUpperCase()}
+                  </div>
+                )}
+
                 <div className="card-pos">{player.Pos}</div>
                 <div className="card-center-info">
                   <div className="card-season-center">{player.Season}</div>
@@ -60,10 +68,11 @@ const Card: React.FC<CardProps> = ({ player, isRevealed, onReveal, isSelected, o
                   </div>
                 )}
                 <div className="card-score-footer">Score: {player.Score.toFixed(1)}</div>
-                {window.innerWidth <= 768 && <div className="mobile-stats-hint"><BarChart3 size={10} style={{ verticalAlign: 'middle' }} /> Stats</div>}
+                {window.innerWidth <= 768 && <div className="mobile-stats-hint"><BarChart3 size={10} style={{ verticalAlign: 'middle' }} /> Tap for Stats</div>}
               </motion.div>
             ) : (
               <motion.div key="stats-info" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="card-content-layer stats-layer" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%', gap: '8px' }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 900, marginBottom: '4px', textAlign: 'center', color: '#fbbf24' }}>STATS</div>
                 <div className="card-stats" style={{ background: 'rgba(0,0,0,0.5)', padding: '8px 4px' }}>
                   <div style={{ fontSize: '0.65rem' }}>PTS: {player.PTS} | TRB: {player.TRB}</div>
                   <div style={{ fontSize: '0.65rem' }}>AST: {player.AST} | STL: {player.STL}</div>
@@ -73,7 +82,7 @@ const Card: React.FC<CardProps> = ({ player, isRevealed, onReveal, isSelected, o
                   <span>WS: {player.WS}</span>
                   <span>PER: {player.PER}</span>
                 </div>
-                <div className="mobile-stats-hint" style={{ fontSize: '0.5rem', opacity: 0.5, textAlign: 'center' }}>Tap to close</div>
+                <div className="mobile-stats-hint" style={{ fontSize: '0.5rem', opacity: 0.5, textAlign: 'center', marginTop: '8px' }}>Tap to flip back</div>
               </motion.div>
             )}
           </AnimatePresence>

@@ -450,42 +450,6 @@
 .bonus-indicator { position: absolute; top: -10px; right: -10px; background: #22c55e; color: white; padding: 4px 10px; border-radius: 1rem; font-size: 0.7rem; font-weight: bold; z-index: 100; box-shadow: 0 0 15px rgba(34,197,94,0.4); animation: bounce 2s infinite; }
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-.card-wrapper { perspective: 1000px; width: 130px; height: 190px; cursor: pointer; transition: transform 0.2s; }
-.card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
-.card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 0.75rem; display: flex; flex-direction: column; padding: 0.75rem; box-sizing: border-box; }
-.card-back { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border: 3px solid #4338ca; display: flex; align-items: center; justify-content: center; color: #818cf8; }
-.card-front { background: #1e293b; transform: rotateY(180deg); border: 1px solid rgba(255, 255, 255, 0.1); justify-content: space-between; }
-.card-name { font-size: 0.85rem; font-weight: bold; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-pos { font-size: 0.75rem; font-weight: bold; color: #fbbf24; text-align: center; }
-.card-center-info { display: flex; flex-direction: column; align-items: center; flex-grow: 1; justify-content: center; }
-.card-season-center { font-size: 1.2rem; font-weight: 900; color: #fff; }
-.card-advanced-stats { font-size: 0.65rem; color: #94a3b8; display: flex; gap: 8px; }
-.card-stats { font-size: 0.65rem; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 0.5rem; text-align: center; }
-.card-score-footer { font-size: 0.6rem; opacity: 0.5; text-align: center; }
-
-.card-content-layer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  width: 100%;
-}
-
-.mobile-stats-hint {
-  font-size: 0.5rem;
-  opacity: 0.6;
-  text-align: center;
-  color: #818cf8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 2px;
-}
-
-/* Fix Card Drag Z-Index */
-.card-wrapper:active {
-  z-index: 5000 !important;
-}
-
 /* Mobile Responsiveness (Screens smaller than 768px) */
 @media (max-width: 768px) {
   .game-container {
